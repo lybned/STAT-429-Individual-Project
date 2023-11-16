@@ -37,10 +37,12 @@ model1 <- lm(Life.expectancy ~ Status_Dummy + Adult.Mortality + infant.deaths + 
 
 summary(model1)
 ```
+
 ```{r}
 par(mfrow=c(2,2))
 plot(model1)
 ```
+
 ```{r}
 plot(model1$fitted.values,rstandard(model1),xlab="Fitted values",
 ylab="Standardized residuals")
@@ -49,6 +51,7 @@ abline(h=-3,lty=2,col=6,lwd=2)
 identify(model1$fitted.values,rstandard(model1))
 
 ```
+
 ```{r}
 mmps(model1)
 ```
@@ -60,11 +63,14 @@ summary(powerTransform(cbind(Life.expectancy, Status_Dummy,Adult.Mortality, infa
 
 
 
+
+
+Group Project
 ```{r}
 
 mm1 <- glm( Status_Dummy ~ Life.expectancy  + Adult.Mortality + infant.deaths + Alcohol + Hepatitis.B + Measles + BMI + Polio + HIV.AIDS + GDP + Population + Schooling, family = binomial,data = clean_data)
 
-
+summary(mm1)
 ```
 
 
