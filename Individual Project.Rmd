@@ -3,11 +3,15 @@ title: "Individual Project"
 output: html_document
 date: '2023-11-06'
 ---
+```{r}
+library(car)
+```
+
 
 Read the data
 ```{r}
 
-lifeExpectData<-read.table("temp.csv", header=TRUE,sep = ",")
+lifeExpectData<-read.table("Life Expectancy Data.csv", header=TRUE,sep = ",")
 
 
 ```
@@ -15,8 +19,11 @@ lifeExpectData<-read.table("temp.csv", header=TRUE,sep = ",")
 
 Remove some of the irrelavent predictorts
 ```{r}
-lifeExpectData2 <- lifeExpectData[,!(names(lifeExpectData) %in% c("Country","Year", "thinness..1.19.years", "thinness.5.9.years"))]
+lifeExpectData2 <- lifeExpectData[,!(names(lifeExpectData) %in% c("Country","Year", "thinness..1.19.years", "thinness.5.9.years", "Income.composition.of.resources", "Total.expenditure", "Diphtheria", "percentage.expenditure", "under.five.deaths"))]
 
+clean_data <- na.omit(lifeExpectData2)
+
+clean_data$Status_Dummy <- factor(clean_data$Status, levels = c("Developing", "Developed"), labels = c(0, 1))
 
 
 ```
@@ -26,7 +33,38 @@ lifeExpectData2 <- lifeExpectData[,!(names(lifeExpectData) %in% c("Country","Yea
 You can also embed plots, for example:
 
 ```{r}
-plot(pressure)
+model1 <- lm(Life.expectancy ~ Status_Dummy + Adult.Mortality + infant.deaths + Alcohol + Hepatitis.B + Measles + BMI + Polio + HIV.AIDS + GDP + Population + Schooling, data = clean_data)
+
+summary(model1)
+```
+```{r}
+par(mfrow=c(2,2))
+plot(model1)
+```
+```{r}
+plot(model1$fitted.values,rstandard(model1),xlab="Fitted values",
+ylab="Standardized residuals")
+abline(h=3,lty=2,col=6,lwd=2)
+abline(h=-3,lty=2,col=6,lwd=2)
+identify(model1$fitted.values,rstandard(model1))
+
+```
+```{r}
+mmps(model1)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+
+summary(powerTransform(cbind(Life.expectancy, Status_Dummy,Adult.Mortality, infant.deaths, Alcohol, Hepatitis.B, Measles, BMI, Polio, HIV.AIDS, GDP, Population, Schooling)~1),bridge)
+```
+
+
+
+```{r}
+
+mm1 <- glm( Status_Dummy ~ Life.expectancy  + Adult.Mortality + infant.deaths + Alcohol + Hepatitis.B + Measles + BMI + Polio + HIV.AIDS + GDP + Population + Schooling, family = binomial,data = clean_data)
+
+
+```
+
+
