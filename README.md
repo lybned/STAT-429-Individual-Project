@@ -15,9 +15,10 @@ The dataset contains data from 2000 - 2015
 Life Expectancy is measured age
 
 ## Model 1
-
+![alt text](https://github.com/lybned/STAT-429-Individual-Project/blob/main/Pictures/Model%201%20Summary.PNG)
 
 ## Model 2
-
+![alt text](https://github.com/lybned/STAT-429-Individual-Project/blob/main/Pictures/Model2.PNG)
 
 ## Model 3
+![alt text](https://github.com/lybned/STAT-429-Individual-Project/blob/main/Pictures/Model3.PNG)
