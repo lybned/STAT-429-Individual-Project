@@ -12,7 +12,7 @@ library(leaps)
 
 Read the data
 ```{r}
-
+setwd("C:\\Users\\ned20\\Documents\\GitHub\\STAT-429-Individual-Project")
 lifeExpectData<-read.table("Life Expectancy Data.csv", header=TRUE,sep = ",")
 
 
@@ -31,11 +31,12 @@ clean_data$Status_Dummy <- factor(clean_data$Status, levels = c("Developing", "D
 
 ```
 
-
+ v 
 ```{r}
 boxplot(clean_data$Life.expectancy,main="Life Expectancy",col="cornflowerblue")
 
-summary(clean_data$Status_Dummy)
+barplot(table(clean_data$Status_Dummy), main="Country Status",
+   xlab="0 -> Developing Country, 1 -> Developed")
 
 boxplot(clean_data$infant.deaths,main="Infant Deaths",col="cornflowerblue")
 
@@ -101,6 +102,8 @@ par(mfrow=c(2,2))
 plot(model2)
 
 ```
+
+
 ```{r}
 plot(model2$fitted.values,rstandard(model2),xlab="Fitted values",
 ylab="Standardized residuals")
@@ -148,7 +151,7 @@ points(which.min(selectionSummary$cp),selectionSummary$cp[which.min(selectionSum
 
 ```{r}
 
-model3 <- lm(NewLife.expectancy ~ Status_Dummy + infant.deaths + Adult.Mortality + NewPolio + NewGDP + Schooling, data = clean_data)
+model3 <- lm(NewLife.expectancy ~ Status_Dummy + Adult.Mortality + NewPolio + NewGDP + Schooling, data = clean_data)
 summary(model3)
 ```
 
@@ -171,4 +174,19 @@ abline(h=3,lty=2,col=6,lwd=2)
 abline(h=-3,lty=2,col=6,lwd=2)
 identify(model3$fitted.values,rstandard(model3))
 
+```
+
+
+```{r}
+
+anova(model3, model2)
+
+```
+
+```{r}
+vif(model3)
+```
+
+```{r}
+shapiro.test(model3$residuals)
 ```
